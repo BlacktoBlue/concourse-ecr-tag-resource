@@ -8,7 +8,7 @@ RUN python3 setup.py sdist
 
 
 FROM alpine:edge
-RUN apk --no-cache add \
+RUN apk --no-cache --upgrade add \
   bash \
   curl \
   git \
@@ -24,6 +24,7 @@ RUN apk --no-cache add \
   python3
 
 COPY --from=builder /app/dist/concourse-ecr-tag-resource-*.tar.gz .
+
 RUN pip3 install concourse-ecr-tag-resource-*.tar.gz
 RUN mkdir -p /opt/resource
 RUN for script in check in out; do ln -s $(which $script) /opt/resource/; done
